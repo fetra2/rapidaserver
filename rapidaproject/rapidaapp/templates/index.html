@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mytemplatetags %}{#this is in rapidaap/templatetags#}
+{% block content %}
+<div class="container">
+    <div class='row'>
+        <h4>Résultat selon: {{ field }}</h4>
+        
+        <table  id="tableObjet" class="table table-striped">
+            <thead class="" style="background-color : #ffd500;" >
+                <tr>   
+                    <th>#</th>  
+                    
+                    {% for item in titre %}
+                        <th> {{ item|underscore_to_blank }} </th>
+                    {% endfor %}
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <div class="row mb-9 ">                 
+                    {% for x in data %}
+                    <tr>
+                        <td> {{ forloop.counter }} </td>
+                        {% for y in x %}
+                            <td> 
+                                {% if y.0 in 'Numero_d_envoi' %}  
+                                    {{ y.1 }}
+                                    <form method="post" id="form_search" action="{% url 'find' %}" target="_self" class="justify-content-center">
+                                        {% csrf_token %}
+                                        <input id="numEnvoi" name="numEnvoi" value="{{y.1}}" type="hidden" />
+                                        <input type="submit"  class="btn btn-primary d-print-none"  value="Voir"/>
+                                    </form>
+                                {% elif y.0 in 'Date' %}
+                                    {{ y.1|date:"d/m/Y h:m" }}
+                                {% elif y.0 in 'Statut' %}
+                                    {{ y.1|statut_meaning }}
+                                {% else %}
+                                    {{ y.1 }}
+                                {% endif %}
+                                     
+                            </td>
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </div>
+            </tbody>
+        </table>
+    </div>
+    <div class='row' style="height: 60px;" >
+    </div>
+</div>
+{% endblock content %}

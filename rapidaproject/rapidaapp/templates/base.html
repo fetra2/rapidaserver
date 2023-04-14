@@ -1,0 +1,144 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'rapidaapp/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/userregistration.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/logAndRegisterBox.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap_css/bootstrap.min.css' %}">
+  <script type="text/javascript" lang="javascript"  src = "{% static 'bootstrap_js/bootstrap.bundle.min.js' %}"></script>
+
+  <script  src = "{% static 'jquery/jquery.js' %}"></script>
+
+  <script  src = "{% static 'footer_js/footer.js' %}"></script>
+
+  <link href="{% static 'datatables/datatables.css' %}" rel="stylesheet">
+  <script  src = "{% static 'datatables/datatables.js' %}"></script>
+
+  <link href="{% static 'datatables_buttons/css/buttons.bootstrap5.min.css' %}" rel="stylesheet">
+  <script  src = "{% static 'datatables_buttons/js/buttons.bootstrap5.min.js' %}"></script>
+
+  <script  src = "{% static 'jszip/jszip.min.js' %}"></script>
+  <script  src = "{% static 'pdfmake/pdfmake.js' %}"></script>
+
+  <script  src = "{% static 'footer_js/base.js' %}"></script>
+ 
+ 
+  
+  {% block mystyle %}
+    
+  {% endblock mystyle %}
+    
+</head>
+<body class="bg-white">
+    
+  {% block navheader %}
+  <header>
+      <nav class="navbar navbar-expand-md text-dark" >
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar_contenu">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- <button class="navbar-toggler", type="button", data-toggle="collapse", data-bs-toggle="collapse", data-target="#navbarNavDropdown", data-bs-target="#navbarNavDropdown", aria-controls="navbarNavDropdown", aria-expanded="false", aria-label="Toggle navigation"></button>-->
+          <div class="collapse navbar-collapse" id="navbar_contenu">
+            {% with request.resolver_match.url_name as url_name %}
+              <div class="navbar-nav mx-auto col-lg-6 align-items-center" id = "lien">
+                <li class=" nav-item nav-link">
+                  <a class="navbar-brand"  href="/">  
+                    <img  src="{% static 'images/Paositra-Rapida.png' %}" alt="Logo", class="img-fluid ml-5", style="max-width:200px">
+                  </a>  
+                </li>
+                <li class=" nav-item nav-link active align-middle"><a  class="nav-link {% if url_name == 'home' %}active{% endif %}" aria-current="home" href="{% url 'home' %}"> <h6> <span class="label label-default"><i class="fas fa-home  "></i> Accueil</span></h6></a> 
+                <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'search_form' %}active{% endif %}" href="{% url 'index' %}"> <h6> <span class="label label-default"><i class="fas fa-magnifying-glass  "></i> Suivre colis</span></h6></a>
+                {% if user.is_authenticated %}    
+                <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'find' %}active{% endif %}" href="{% url 'find' %}"> <h6> <span class="label label-default"><i class="fas fa-magnifying-glass  "></i> Colis du jour</span></h6></a> 
+                <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'event' %}active{% endif %}" href="{% url 'event' %}"> <h6> <span class="label label-default"><i class="fas fa-pencil "></i> Faire une reception</span></h6></a> 
+                {% endif %}
+                {% block active %}
+                {% endblock active %}              
+              </div>
+            {% endwith %}
+              <div class="navbar-nav mx-auto">
+                  <div class="nav-item dropdown slide">   
+                    {% if user.is_authenticated %} 
+                    <a  class="nav-link dropdown-toggle text-dark ", href="#", id="navbarDropdownMenuLogin", role="button", data-bs-toggle="dropdown", aria-expanded="false">
+                      <span class="d-none d-sm-inline mx-1"> <i class="fas fa-user "></i> {{request.user}}</span>
+                    </a>
+                    {% else %}
+                    <a  class="nav-link dropdown-toggle text-dark ", href="#", id="navbarDropdownMenuLogin", role="button", data-bs-toggle="dropdown", aria-expanded="false">
+                    <span class="d-none d-sm-inline mx-1"> <i class="fas fa-user "></i>  connexion</span>
+                    </a>
+                    {% endif %}
+                    <!-- <a  class="nav-link dropdown-toggle  text-dark ", href="#", id="navbarDropdownMenuLogin", role="button", data-bs-toggle="dropdown", aria-expanded="false">
+                        <i class="fas fa-user "></i> Mon compte    
+                    </a>-->
+                    <div class="dropdown-menu" id="box" style="z-index : 1;	background-color: rgb(255, 255, 0); "  aria-labelledby="navbarDropdownMenuLogin">
+                      {% if user.is_authenticated %}
+                      <br>
+                          <a class="dropdown-item  text-dark " , href="{% url 'logout' %}"><i class="fas fa fa-angle-double-left"></i>  Se déconnecter</a>
+                      {% else %} 
+                          <a class="dropdown-item text-dark" , id="login", href="{% url 'login' %}"><span><i class="fas fa-user"></i>   Se connecter</span> </a>
+                          <br> 
+                          <a class="dropdown-item text-dark" , href="{% url 'new_users' %}"><span class="glyphicon glyphicon-user">
+                          </span><i class="fas fa-user-plus "></i>    s'inscrire</a>
+                      {% endif %}
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </nav>
+   </header>
+   {% endblock navheader %}
+     
+   
+   
+   <script>
+  
+     $(document).ready(function(e){
+          var table = $('#tableObjet').DataTable({ 
+              dom: 'Blfrtip',
+              buttons: [
+                  {
+                      extend: "print",
+                      exportOptions: {
+                          stripHtml: false,
+                          orthogonal: "myExport"
+                      },
+                      title: 'Fiche de demandes de collecte et de livraison'
+                  },
+                  'copy', 'excel'
+              ],
+              "language":{
+                "oPaginate": {
+                  "sFirst":    "Première",
+                  "sLast":    "Dernière",
+                  "sNext":    "Suivante",
+                  "sPrevious": "Précédente"
+                },
+                "search": "Recherche:",
+                "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+                "infoEmpty": "Affichage de 0 à 0 sur 0 entrées",
+                "infoFiltered": "(filtrées depuis un total de _MAX_ entrées)",
+                "lengthMenu": "Afficher _MENU_ entrées",
+              },
+              responsive: true,
+            }
+            );      
+          });
+          
+          </script>
+  {% block content %}{% endblock content %}
+  {% block footer%}
+  <footer class="bottom-fixed py-4 bg-primary text-white-50">
+    <div(class="text-center")>
+        <small>&copy; by PAOSITRA MALAGASY</small>
+    </div>
+  </footer>  
+  {% endblock footer %}
+</body>
+</html>

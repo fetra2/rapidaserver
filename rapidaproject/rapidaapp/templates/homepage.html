@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="container-fluid">
+
+            <div class="row bg-primary bg-image  d-flex flex-row align-items-center justify-content-center" style="background-image: url({% static '/images/cropped-DSC07363-scaled-3-1536x639.jpg' %}); object-fit: none; max-height:80vh; min-height: 70vh; background-repeat:no-repeat;background-position: bottom;">
+                <h1 class="text-white bg-transparent">PAOSITRA RAPIDA</h1>
+                <div class="mt-5 d-inline-flex align-items-center justify-content-center">
+                    <a class="btn btn-primary rounded-pill m-3 mt-5 p-3 ps-5 pe-5" href="{% url 'search_form' %}">Suivre votre colis</a>
+                    <a class="btn btn-secondary rounded-pill m-3 mt-5 p-3 ps-5 pe-5 disabled" href="{% url 'search_form' %}">Simuler votre tarif</a>
+                </div>
+            </div> 
+
+            
+            <div class="row mb-12 g-0 position-relative zindex-dropdown " style="top: -50px;">
+                <div class="col-lg-3 col-md-6  col-sm-12 d-flex align-items-stretch">{# d-flex align-items-stretch make cards of same height#}
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            Transport de colis
+                        </div>
+                        <div class="card-body">
+                            <p class="">Nous mettons à votre disposition un service de transport de colis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6  col-sm-12 d-flex align-items-stretch">    
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            Fiable
+                        </div>
+                        <div class="card-body">
+                            <p class="">Un reçu sera mis à votre disposition contre votre colis pour garant et  facilité de suivi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6  col-sm-12 d-flex align-items-stretch">    
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            Collecte
+                        </div>
+                        <div class="card-body">
+                            <p class="">Paositra Rapida peut assurer  la collecte de vos colis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6  col-sm-12 d-flex align-items-stretch">    
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            Traçable
+                        </div>
+                        <div class="card-body">
+                            <p class="">Nous mettons à votre disposition un plateform de suivi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-6  col-sm-12 d-flex align-items-stretch">{# d-flex align-items-stretch make cards of same height#}
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            Suivre un colis sans avoir un compte
+                        </div>
+                        <div class="card-body">
+                            <form method="post" id="form_search" action="{% url 'find' %}" target="_self" class="justify-content-center">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Entrer le numéro de l'envoi içi" aria-label="Entrer le numéro de l'envoi içi" aria-describedby="numEnvoi">
+                                    <div class="input-group-append">
+                                        <input type="submit" class="input-group-text" id="numEnvoi" name="numEnvoi">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+            <div class='row' style="height: 60px;" >
+            </div>
+    </div>
+{% endblock content %}

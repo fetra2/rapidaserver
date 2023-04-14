@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h4>Résultat selon: {{ field }}</h4>
+    <div class="card rounded-0">
+        <div class="card-header text-center">
+            <span>Informations générales</span>
+        </div>
+        <div class="card-body">
+                <p class="">Envoi N:	{{dataListDict.0.Numero_d_envoi}}</p>
+                <p class="">Bureau d'origine :	{{dataListDict.0.Bureau_d_origine}}</p>
+                <p class="">Bureau de destination :	{{dataListDict.0.Bureau_de_destination}} </p>
+                <p class="">Nom du destinataire :	{{dataListDict.0.Destinataire}}</p>
+        </div>
+    </div>
+    <div class="row mb-12 ">
+        {% for x in data %}
+            {% for y in x %}   
+                {% if y.0 not in 'Numero_d_envoi, Bureau_d_origine, Bureau_de_destination, Destinataire, poids, Expediteur' %}   
+                <div class="col-lg-3 col-md-6  col-sm-12 g-0 align-items-stretch">{# d-flex align-items-stretch make cards of same height#}
+                    <div class="card rounded-0 border-0">
+                        {% if forloop.parentloop.first %}
+                        <div class="card-header text-center">
+                            <p class="fw-bold"> {{ y.0 }} </p>
+                        </div>
+                        <div class="card-body border-0 text-center">
+                            <p class="fw-bold"> {{ y.1 }} </p>
+                        </div>
+                        {% else %}
+                        <div class="card-body border-0 text-center">
+                            <p> {{ y.1 }} </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+            {% endfor %}
+        {% endfor %}
+    </div>
+    
+    <div class='row' style="height: 60px;" >
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,7 @@
+list pids using 5000:
+sudo lsof -i:5000
+kill pid:
+kill <PID> or sudo kill -9 <PID>
+e.g: sudo kill -9 12652
+run gunicorn in config/gunicorn/prod.py:
+gunicorn -c config/gunicorn/prod.py

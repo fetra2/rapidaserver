@@ -1,0 +1,96 @@
+
+
+{% extends 'base.html' %}
+{% block navbar %} {% endblock navbar %}
+
+{% block content %}
+{% load static %}
+<style type="text/css">
+    body{
+        overflow-x : hidden
+}
+</style>
+ 
+  <div class="row d-flex justify-content-center align-items-center h-100"  id = "grad1">
+    <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div id="Register">
+                <div class="register-box" style="  background: rgba(17, 17, 17, 0.9); width: 600px;">
+                    <h2 class="text-warning">Inscrivez-vous</h2>
+                    <form method="post" id="msform">
+                      {% csrf_token %}
+                        <fieldset class="col-md-12 mb-6 ", id='fs-1'>
+                            <div class="row mb-2">
+                                <div class="user-box col-lg-6">
+                                    <input type="text" class="text-light" name="username" required="">
+                                    <label>Nom</label>
+                                </div>
+                                <div class="user-box col-lg-6">
+                                    <input type="text" name="firstname" class="text-light" required="">
+                                    <label>Prénom</label>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="user-box col-lg-6">
+                                    <input type="date" name="birthday" id=""  id="birthdayDate" class="text-light">
+                                    <label> Date de naissance</label>
+                                </div>
+                                <div class="col-md-6 user-box">
+                                    <h6 class="mb-2 pb-1 text-light">Sexe:</h6>&
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <input  type="radio", name="gender", id="femaleGender", value="female">
+                                                <label>Feminin</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input  type="radio", name="gender", id="maleGender", value="male">
+                                                <label class="form-check-label", for="maleGender">Masculin</label>
+                                            </div>
+                                        </div>    
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6 user-box " >
+                                    <input type="email"  name="email"required="" class="text-light">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6 user-box" >
+                                    <input type="tel" name="contact" id="tel" required="" class="text-light">
+                                    <label>Contact</label>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6 user-box " >
+                                    <input type="password"  name="password"  required="" class="text-light">
+                                    <label>Mot de passe</label>
+                                </div>
+                                <div class="col-md-6 user-box " >
+                                    <input type="password" name="confirm_password"  required="" class="text-light">
+                                    <label>Confirmer  mot de passe</label>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                {% if message %}
+                                <h6 class="message">{{ message }} </h6> 
+                                {% endif %}
+                                {% if messages %}
+									{% for message in messages   %}
+									
+										{{  message }}        
+								
+									{% endfor %}
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <div class="text-center  mt-4 pt-2 ml-6">
+                            <button id="login" name="register" type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;"  text-align ="center">S' inscrire</button>
+                            <h3 class="small fw-bold mt-2 pt-1 mb-0 text-light">Avez-vous un compte? <a href="{% url 'djangoapp:log' %}" target="_blank"  class="link-danger">  connecter</a></h3>
+                        </div>
+                  </form>
+                </div>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+

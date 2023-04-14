@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h4 class="pb-md-0"><b>Résultats</b></h3>
+    <div class='row  justify-content-center' >
+        {% for x in data %}
+        {{ x}}
+        {% endfor %}
+        <div><a href="{% url 'new_users' %}">Ajouter</a></div>
+        <table  id="tableObjet" class="table table-striped display">
+            <thead class="" style="background-color : #ffd500;" >
+                <tr>   
+                    <th>#</th>  
+                    <th>Email</th>
+                    <th>Login</th>
+                    <th>Mots de passe</th>
+                    <th>Role</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <div class="row mb-9 ">
+                    {% for x in data %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ x.email }}</td> 
+                            <td>{{ x.username }}</td> 
+                            <td>{{ x.password }}</td> 
+                            <td>{{ x.roles }}</td> 
+                            <td>
+                                <form action="{% url 'users' %}" method="post">
+                                    <input type="hidden" name="id" value="{{ x.id }}">
+                                    <input type="submit" name="delete" value="Supprimer">
+                                    <a class="button" href="{% url 'edit_form_users' x.id %}">Modifier</a>
+                                    {% csrf_token %}
+                                </form>
+                            </td> 
+                        </tr>
+                    {% endfor %}
+                </div>
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

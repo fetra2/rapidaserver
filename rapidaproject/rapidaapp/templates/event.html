@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mytemplatetags %}{#this is in rapidaap/templatetags#}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto text-center">
+            RECEPTION
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mx-auto d-flex align-items-center">
+            <form method="post" id="form_search2" action="" target="_self" class="d-flex align-items-center" style="margin-top: 0px; margin-bottom: 30px;">
+                <div class="form-group align-items-center">
+                    <label for="inputText">Entrer code à bare ici</label>
+                    <div class="d-flex">
+                        {% csrf_token %}
+                        <input id="numEnvoi" name="numEnvoi" value="" type="text" class="form-control" />
+                        <input id="isEvent" name="isEvent" value="1" type="hidden" />
+                        <input type="submit"  class="btn btn-primary ml-2 d-print-none"  value="Chercher"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class='row'>
+        <form method="post" id="form_search3" action="" target="_self" class="justify-content-center">
+            {% csrf_token %}
+            <table  id="tableObjet" class="table table-striped">
+                <thead  class="" style="background-color : #ffd500;" >
+                    <tr id="data-head">   
+                        <th>#</th>  
+                        
+                        {% for item in titre %}
+                            <th> {{ item|underscore_to_blank }} </th>
+                        {% endfor %}
+                        
+                    </tr>
+                </thead>
+                <tbody id="data-body">
+                    <div class="row mb-9 ">                 
+                        {% for x in data %}
+                            <tr >
+                                <td> {{ forloop.counter }} </td>
+                                {% for y in x %}
+                                    <td> 
+                                        {% if y.0 in 'Numero_d_envoi' %}  
+                                            {{ y.1 }}
+                                            
+                                            
+                                        {% elif y.0 in 'Date' %}
+                                            {{ y.1|date:"d/m/Y h:m" }}
+                                        {% elif y.0 in 'Statut' %}
+                                            {{ y.1|statut_meaning }}
+                                        {% else %}
+                                            {{ y.1 }}
+                                        {% endif %}                                        
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </div>
+                </tbody>             
+            </table>
+            <div class='row' style="height: 60px;" >
+            </div>
+            <div class="row">
+                <div class="form-control col-lg-3">
+                    <input type="text" id="inputBureauOrigine" class="inputBureau" placeholder="Search..."> 
+                    <select data-trigger="" id="selectBureauOrigine" name="bureauOrigine">
+                        <option placeholder="" value="">Bureau Expediteur</option>
+                        {% for x in dataBureau %}
+                            <option value="{{x.ncodique}}">{{x.bureau}}</option>
+                        {% endfor %}
+                    </select>  
+                </div>   
+            </div>
+            <div class="row">
+                <div class="form-control col-lg-3">
+                    <input type="text" id="myInput" class="inputBureau"  placeholder="Search...">
+                    <select data-trigger="" name="bureauPasse" id="selectBureauPasse">
+                        <option placeholder="" value="">Bureau passage</option>
+                        {% for x in dataBureau %}
+                        <option value="{{x.ncodique}}">{{x.bureau}}</option>
+                        {% endfor %}
+                    </select>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="form-control">
+                    <input type="text" id="myInput" class="inputBureau" placeholder="Search...">
+                    <select data-trigger="" name="bureauDest">
+                        <option placeholder="" value="">Bureau destinataire</option>
+                        {% for x in dataBureau %}
+                        <option value="{{x.ncodique}}">{{x.bureau}}</option>
+                        {% endfor %}
+                    </select>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="form-control">
+                    <input type="text" id="myInput" class="inputBureau" placeholder="Search...">
+                    <select data-trigger="" name="statut">
+                        <option placeholder="" value="A">A</option>
+                        <option placeholder="" value="B">B</option>
+                        <option placeholder="" value="C" selected>C</option>
+                        <option placeholder="" value="D">D</option>
+                        <option placeholder="" value="E">E</option>
+                    </select>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="form-control col-lg-3">
+                    <input type="button" id="resetEventC"  class="btn btn-secondary d-print-none"  value="Effacer tous"/>
+                    <input type="submit" id="eventC"  class="btn btn-primary d-print-none"  value="Recevoir"/>
+                    <span id="message" class="text-success"></span>
+                </div>
+            </div>  
+        </form>
+    </div>
+    <div class='row' style="height: 60px;" >
+    </div>
+</div>
+
+
+<style>
+    .tt-menu {
+      background-color: #ffffff !important;
+      border: 1px solid #cccccc !important;
+      border-radius: 4px !important;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175) !important;
+    }
+</style>
+<script>
+    var myData = JSON.parse('{{ json_data|escapejs }}');
+    console.log(myData);
+</script>
+
+  
+  <script>
+ 
+  </script>
+  <script  src = "{% static 'eventpage_js/event.js' %}"></script>
+
+
+
+
+
+
+
+{% endblock content %}

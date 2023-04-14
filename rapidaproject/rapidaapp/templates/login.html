@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block navbar %} {% endblock navbar %}
+{% block content %}
+{% load static %}
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col-md-10 col-lg-6 col-xl-4 offset-xl-1">
+          <div id="tsparticles" >
+                <div class="login-box" style=" width: 500px;">
+                    <h2>Se connecter</h2>
+                        <form method="post" action="{% url 'check_auth' %}">
+                                {% csrf_token %}
+                                <div class="user-box">
+                                <input type="text" name="username" required="">
+                                <label>Login</label>
+                                </div>
+                                <div class="user-box">
+                                <input type="password" name="password" required="">
+                                <label>Mots de passe</label>
+                                </div>
+                                <div class="form-group"  id="mess">
+                                        {% if message %}
+                                        <h6 class="message" style="color : red">{{ message }}</h6>
+                                        {% endif %}
+                        
+                                        {% if messages %}
+                                                <h6 >{{ messages }}</h6>
+                                        {% endif %}
+                                        {% if verifie %}
+                                                <h6 style="color : green" >{{ verifie }}</h6>
+                                        {% endif %}
+                                        {% if modifie_username %}
+                                                <h6 style="color : green" >{{ modifie_username }}</h6>
+                                        {% endif %}
+                                        {% if modifie_password %}
+                                                <h6 style="color : green" >{{ modifie_password }}</h6>
+                                        {% endif %}
+                                </div>
+
+                                <div class="text-center  mt-4 pt-2 ml-6">
+                                <button id="login" name="connecter" type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;"  text-align ="center">Se connecter</button>
+                                <h5 class=" fw-bold mt-2 pt-1 mb-0 text-light">vous n' avez pas de compte? <a href="" target="_blank"  class="link-danger">inscrivez-vous</a></h5>
+                                </div>
+                                <div class="text-center  mt-0 pt-2 ml-6">
+                                        <a id="pass" href="" class="text-light">mots de passe oublié?</a>
+                                </div>
+                        </form>
+                </div>
+          </div>
+    </div>
+  </div>
+{% endblock content %}
