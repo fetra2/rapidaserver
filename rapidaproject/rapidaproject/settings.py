@@ -11,19 +11,26 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import dotenv
+import os
+dotenv.load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%x85zf!l61lbq-7f(ufbs!imi3g^v$bjx%lfjwps6h6704a2_t'
+#SECRET_KEY = 'django-insecure-%x85zf!l61lbq-7f(ufbs!imi3g^v$bjx%lfjwps6h6704a2_t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = False
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -36,12 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',  # <-- Updated!
     'django.contrib.staticfiles',
     'rapidaapp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -73,32 +82,54 @@ WSGI_APPLICATION = 'rapidaproject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-import pymysql
+#import pymysql
 
-pymysql.install_as_MySQLdb()
-
+#pymysql.install_as_MySQLdb()
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'rapidaclient',
         'USER': 'postgres',
-        'PASSWORD': 'root',
+        'PASSWORD': 'savony@NosY.01',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     },
     'envois': {
+        'ENGINE': 'sql_server.pyodbc',
+        'HOST': 'ccpserver',
+        'PORT': '1433',
+        'NAME': 'BddTrav',
+        'USER': 'sa',
+        'PASSWORD': '123Paoma456',
+        'OPTIONS': {
+            'driver': 'FreeTDS',
+            'extra_params': 'TrustServerCertificate=no',
+        },
+    },
+}
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'rapidaclient',
+        'USER': 'postgres',
+        'PASSWORD': 'savony@NosY.01',
+        'HOST': '192.168.88.129',
+        'PORT': '5432',
+    },
+    'envois': {
         'ENGINE': 'mssql',
-        'NAME': 'BddTrav_Test',
         'HOST': '154.126.56.88',
-        'PORT':'1433',
+        'PORT': '1433',
+        'NAME': 'BddTrav',
         'USER': 'sa',
         'PASSWORD': '123Paoma456',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
-    }
+    },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -133,10 +164,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_ROOT = "static/"
+import os
+#STATIC_ROOT = "static/"
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
+'''STATICFILES_DIRS = [
     ("images", "rapidaapp/static/rapidaapp/images"),
 
     ("styles", "rapidaapp/static/rapidaapp/styles"),
@@ -153,8 +184,27 @@ STATICFILES_DIRS = [
     ("pdfmake", "DataTables/pdfmake-0.1.36"),#js 
 
     ("eventpage_js", "rapidaapp/static/rapidaapp/javascripts"),   
-]
+]'''
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATICFILES_DIRS = [
+    ("images", os.path.join(BASE_DIR, "rapidaapp/static/rapidaapp/images")),
 
+    ("styles", os.path.join(BASE_DIR, "rapidaapp/static/rapidaapp/styles")),
+
+    ("footer_js", os.path.join(BASE_DIR, "rapidaapp/static/rapidaapp")),
+
+    ("bootstrap_css", os.path.join(BASE_DIR, "node_modules/bootstrap/dist/css")),
+    ("bootstrap_js", os.path.join(BASE_DIR, "node_modules/bootstrap/dist/js")),
+
+    ("jquery", os.path.join(BASE_DIR, "node_modules/jquery/dist")),
+    ("datatables", os.path.join(BASE_DIR, "DataTables")),
+    ("datatables_buttons", os.path.join(BASE_DIR, "DataTables/Buttons-2.2.3")),
+    ("jszip", os.path.join(BASE_DIR, "DataTables/JSZip-2.5.0")),
+    ("pdfmake", os.path.join(BASE_DIR, "DataTables/pdfmake-0.1.36")),
+
+    ("eventpage_js", os.path.join(BASE_DIR, "rapidaapp/static/rapidaapp/javascripts")),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # <-- Updated!
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

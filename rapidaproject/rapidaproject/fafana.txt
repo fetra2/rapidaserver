@@ -1,0 +1,11 @@
+echo $PATH
+/home/administrateur/web_src/rapidaserver/rapidavenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
+
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'MARS_Connection': True,
+            'host_is_server': True,
+            'autocommit': True,
+            'extra_params': 'timezone=UTC', # set the timezone to UTC
+        },

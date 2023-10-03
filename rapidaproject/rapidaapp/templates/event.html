@@ -6,13 +6,17 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 mx-auto text-center">
-            RECEPTION
+            RECEPTION 
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 mx-auto d-flex align-items-center">
             <form method="post" id="form_search2" action="" target="_self" class="d-flex align-items-center" style="margin-top: 0px; margin-bottom: 30px;">
                 <div class="form-group align-items-center">
+                    {% if message %}
+                        <span class="text-danger">Une Mis à jour faite sur: {{message}} </span>
+                    {% endif %}
+
                     <label for="inputText">Entrer code à bare ici</label>
                     <div class="d-flex">
                         {% csrf_token %}
@@ -24,8 +28,16 @@
             </form>
         </div>
     </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <div class='row'>
-        <form method="post" id="form_search3" action="" target="_self" class="justify-content-center">
+        <form method="post" id="form_search3" action="{% url 'ajax_add' %}" target="_self" class="justify-content-center">
             {% csrf_token %}
             <table  id="tableObjet" class="table table-striped">
                 <thead  class="" style="background-color : #ffd500;" >
@@ -141,7 +153,7 @@
   <script>
  
   </script>
-  <script  src = "{% static 'eventpage_js/event.js' %}"></script>
+  <script  src = "{% static 'eventpage_js/event.js' %}" crossorigin="anonymous"></script>
 
 
 

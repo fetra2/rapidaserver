@@ -120,9 +120,7 @@ $(document).ready(function(){
     $("#ContentCom").slideToggle("slow");
     });
 });
-document.querySelector('.img__btn').addEventListener('click', function() {
-  document.querySelector('.cont').classList.toggle('s--signup');
-});
+
 /*detailcartitem */
 var loading = function(isLoading) {
     if (isLoading) {
@@ -136,3 +134,33 @@ var loading = function(isLoading) {
       document.querySelector("#button-text").classList.remove("hidden");
     }
   };
+
+//event.js
+$(document).ready(function(){
+
+    const selectBureauOrigine = document.getElementById("selectBureauOrigine");
+    const inputBureauOrigine = document.getElementById("inputBureauOrigine");
+    //const elements = document.querySelectorAll(".bureau");
+  
+    //inputBureauOrigine.addEventListener("input", function() {
+    $(".inputBureau").on("input", function() {
+        const filterValue = this.value.toLowerCase();
+        const selectSibling = this.nextElementSibling;
+        var temp = []
+        for (let i = 0; i < selectSibling.options.length; i++) {
+            const optionText = selectSibling.options[i].text.toLowerCase();
+            const optionValue = selectSibling.options[i].value.toLowerCase();
+            
+            if (optionText.includes(filterValue) || optionValue.includes(filterValue)) {
+                temp.push(i);
+                selectSibling.options[i].style.display = "block";
+            } else {
+                selectSibling.options[i].style.display = "none";
+            }   
+        }
+        for (const element of temp) { 
+            selectSibling.options[element].selected = true;
+            break;
+        } 
+    });
+});

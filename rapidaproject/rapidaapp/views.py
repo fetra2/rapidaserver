@@ -13,6 +13,7 @@ from django.db.utils import DatabaseError
 from datetime import datetime, date
 import requests
 import json
+from django.contrib import messages
 
 from django.views.decorators.http import require_http_methods
 #add this line if want to make methode Post: @require_http_methods(["POST"])
@@ -213,27 +214,7 @@ def search(request, default=None):
         {'Numero_d_envoi': item['Numero_d_envoi']}
         for item in dataListDict
     ]
-    if request.session.get('temp_data') is None:
-        request.session['temp_data']=[]
-    my_old_session_data = request.session.get('temp_data', [])
-    print(data_strings)
-    my_old_session_data.append(data_strings[0]) 
-    print('session temp_data: ', my_old_session_data)
-    # Store the list of dictionaries with strings in the session
-    request.session['temp_data'] = my_old_session_data
-    #request.session['temp_data'] =  remove_duplicates_of_list_of_dict(temp_data)
-    #print(type(data))
-    #print(len(data))
-    #print(type(data[0]))
-    #print(dataListDict)
-    #print(dataListDict2)
-    #print(dataListTuple)
-    #data = Envoi.objects.raw(query).using('envois')
-    #keysList = list(data[0].keys())
-    #print(keysList)
-    #request.session['temp_data'].append(dataListTuple)
-    print(data_strings)
-    #print(request.session.get('temp_data'))
+
     return {"dataListDict": dataListDict, "dataListTuple": dataListTuple, "field": field}
 
 def index(request):
@@ -522,9 +503,16 @@ def add_event(request):
         #print(data_list)
         # Serialize data to JSON
         json_data = json.dumps(dict)
+
+        #
+        message = None
+        if request.GET.get('envois'):
+            message = request.GET.get('envois')
+        
         context = {
             'dataBureau': data,
             'json_data': json_data,
+            'message': message,
         }
         return render( request , 'event.html' , context)
     else:
@@ -595,7 +583,8 @@ def ajax_add(request):
         print(queries)
         for query in queries:
             connect_and_insertquery("envois", query)
-            pass
-        return JsonResponse({"modification":numEnvois})
+        #return JsonResponse({"modification":numEnvois}) #if ajax
+        messages.success(request, numEnvois)
+        return redirect(reverse('event'))
     else:
         return render( request , 'event.html' ,context)

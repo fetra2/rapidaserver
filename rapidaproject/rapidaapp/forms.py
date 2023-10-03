@@ -12,7 +12,8 @@ class UserForm(forms.ModelForm):
             'password',
         ]
         widgets = {
-            'validate': forms.TextInput(),
+            'username': forms.TextInput(attrs={'autocomplete': 'username', 'class': 'form-field'}),
+            'email': forms.EmailInput(attrs={'autocomplete': 'email', 'class': 'form-field'}),
         }
 
 class EditUserForm(forms.ModelForm):

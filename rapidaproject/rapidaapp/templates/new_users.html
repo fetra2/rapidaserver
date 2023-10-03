@@ -2,11 +2,52 @@
 {% load static %}
 {% block navbar %} {% endblock navbar %}
 {% block content %}
-    <div class='row  justify-content-center' >
+    <div id='form-container' >
         <form action="{% url 'users' %}" method="post">
             {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Submit">
+            <div id='form-contents'>
+                {% for field in form %}
+                    <p class="form-field">{{ field.label_tag }} {{ field }}</p>
+                {% endfor %}
+                <div class="btn-container"><input type="submit" class="btn btn-primary" value="Submit"></div>
+            </div>
         </form>
     </div>
+    <style>
+        #form-container{
+            display: flex;
+            justify-content: center;
+        }
+        
+        #form-contents{
+            width: 600px;
+            background-color: ghostwhite;
+            padding: 20px;
+        }
+        .form-field {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 1em;
+        }
+        
+        .form-field label {
+          font-weight: bold;
+          margin-bottom: 0.5em;
+        }
+        
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+          padding: 0.5em;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        .btn-container{
+            display:flex;
+            justify-content: flex-end;
+        }       
+        
+    </style>
 {% endblock content %}
+
