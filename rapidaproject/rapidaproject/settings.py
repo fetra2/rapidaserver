@@ -114,8 +114,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'rapidaclient',
         'USER': 'postgres',
-        'PASSWORD': 'savony@NosY.01',
-        'HOST': '192.168.88.129',
+        'PASSWORD': 'postgres',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     },
     'envois': {

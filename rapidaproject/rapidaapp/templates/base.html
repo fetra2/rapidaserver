@@ -55,9 +55,11 @@
                 </li>
                 <li class=" nav-item nav-link active align-middle"><a  class="nav-link {% if url_name == 'home' %}active{% endif %}" aria-current="home" href="{% url 'home' %}"> <h6> <span class="label label-default"><i class="fas fa-home  "></i> Accueil</span></h6></a> 
                 <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'search_form' %}active{% endif %}" href="{% url 'index' %}"> <h6> <span class="label label-default"><i class="fas fa-magnifying-glass  "></i> Suivre colis</span></h6></a>
-                {% if user.is_authenticated %}    
-                <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'find' %}active{% endif %}" href="{% url 'find' %}"> <h6> <span class="label label-default"><i class="fas fa-magnifying-glass  "></i> Colis du jour</span></h6></a> 
-                <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'event' %}active{% endif %}" href="{% url 'event' %}"> <h6> <span class="label label-default"><i class="fas fa-pencil "></i> Faire une reception</span></h6></a> 
+                {% if user.is_authenticated %}
+                  {% if is_ctpr_member  %}
+                  <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'find' and http_method == 'GET' %}active{% endif %}" href="{% url 'find' %}"> <h6> <span class="label label-default"><i class="fas fa-magnifying-glass  "></i> Colis du jour</span></h6></a> 
+                  <li class=" nav-item nav-link align-middle"><a  class="nav-link {% if url_name == 'event' %}active{% endif %}" href="{% url 'event' %}"> <h6> <span class="label label-default"><i class="fas fa-pencil "></i> Faire une reception</span></h6></a> 
+                  {% endif %}
                 {% endif %}
                 {% block active %}
                 {% endblock active %}              

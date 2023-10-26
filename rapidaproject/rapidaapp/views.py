@@ -2,21 +2,21 @@ from ast import For
 from operator import index
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from rapidaapp.models import Envoi, TblBureau
+from rapidaapp.models import Envoi, TblBureau, Personne, UserProfile, Company
 from rapidaapp.forms import UserForm, EditUserForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth  import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.models import User 
-from django.db import connections, transaction
+from django.db import connections, transaction, OperationalError
 from django.db.utils import DatabaseError
 from datetime import datetime, date
 import requests
 import json
 from django.contrib import messages
 
-from django.views.decorators.http import require_http_methods
 #add this line if want to make methode Post: @require_http_methods(["POST"])
+from django.views.decorators.http import require_http_methods
 
 
 # Create your views here.
@@ -59,7 +59,7 @@ def dict_to_sqlInsert(dict):
     return fields_txt[:-2] + ") values " + values_txt[:-2] +")"
 
 def connect_and_insertquery(db_connection_name, query, param_list = None):#db_connection_name = 'envoi'
-    print(query)
+    #print(query)
     try:
         with connections[db_connection_name].cursor() as cursor: 
             cursor.execute(query, param_list)
@@ -77,6 +77,11 @@ def connect_and_insertquery(db_connection_name, query, param_list = None):#db_co
 def insert_data_into_database (connection_name, table, dict=None):#dict = {'statut': 'B', 'numEnvoi': 'AO 101122101073'}  
     query = "Insert into " + table + dict_to_sqlInsert(dict)
     return connect_and_insertquery('connection_name', query)
+
+def pass_usergroup_to_context(request):
+    is_ctpr_member = request.user.groups.filter(name='CTPR').exists()
+    context = {'is_ctpr_member': is_ctpr_member}
+    return context
 
 def update_table(request, numEnvoi):
     query = "UPDATE dbo.Historique SET dbo.Historique.isActive=1 WHERE numEnvoi='numEnvoi'"
@@ -102,6 +107,9 @@ def search(request, default=None):
                 where_clause = where_clause + "dbo.Historique." +str(q) + " LIKE '" + request.POST[q] + "' AND "
             elif(str(q) in 'idPersExp, idPersDest'):
                 where_clause = where_clause + "dbo.Facture." +str(q) + " LIKE '" + request.POST[q] + "' AND "
+            elif(str(q) in 'nomPersExp'):
+                x = request.POST[q]
+                where_clause = where_clause + "LOWER(dbo.Personne.nom) LIKE '%" + x.lower() + "' AND "
             else:    
                 where_clause = where_clause + "dbo.Envoi." +str(q) + " LIKE '" + request.POST[q] + "' AND "
     where_clause = where_clause[:-4]
@@ -163,6 +171,13 @@ def search(request, default=None):
         else:
             field = str(request.POST['idPersExp'])
             query = "SELECT distinct  dbo.Envoi.codeBarre as Numero_d_envoi, dbo.Historique.dateHistoriqueFull as Date, TblBureau_3.Nombureau AS Localisation, dbo.Historique.Statut, TblBureau_4.Nombureau AS Prochain_bureau, dbo.TblBureau.Nombureau AS Bureau_d_origine, TblBureau_1.Nombureau AS Bureau_de_destination, Personne.nom AS Expediteur,  Personne_1.nom + ' '+ Personne_1.adresse AS Destinataire, dbo.Envoi.poids, p1.vehicle as Voiture  FROM dbo.Envoi INNER JOIN dbo.Historique ON dbo.Envoi.numEnvoi = dbo.Historique.numEnvoi INNER JOIN dbo.TblBureau ON dbo.Envoi.bureauOri = dbo.TblBureau.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_2 ON dbo.Envoi.bureauPass = TblBureau_2.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_1 ON dbo.Envoi.bureauDest = TblBureau_1.NCODIQUE INNER JOIN dbo.Facture ON dbo.Historique.numEnvoi = dbo.Facture.numEnvoi INNER JOIN dbo.Personne AS Personne_1 ON dbo.Facture.idPersDest = Personne_1.idPers INNER JOIN dbo.Personne ON dbo.Facture.idPersExp = dbo.Personne.idPers INNER JOIN dbo.TblBureau AS TblBureau_3 ON dbo.Historique.parcours = TblBureau_3.NCODIQUE FULL JOIN dbo.TblBureau AS TblBureau_4 ON dbo.Historique.burSuiv = TblBureau_4.NCODIQUE "+" LEFT  JOIN dbo.PartColis p1 ON (dbo.Envoi.codeBarre = p1.idColis and p1.idPartColis=(select Max(p2.idPartColis) FROM PartColis p2 WHERE dbo.Envoi.codeBarre=p2.idColis) ) WHERE dbo.Facture.idPersExp LIKE '"+  request.POST['idPersExp'] + "'" + "AND dbo.Historique.isActive=1 ORDER BY dbo.Envoi.codeBarre ASC, dbo.Historique.dateHistoriqueFull DESC;"            
+    elif('nomPersExp' in request.POST):
+        if len(request.POST['nomPersExp'])>0:
+            if(len(where_clause)>0):#dbo.Historique.isActive
+                query = "SELECT distinct dbo.Envoi.codeBarre as Numero_d_envoi, dbo.Historique.dateHistoriqueFull as Date, TblBureau_3.Nombureau AS Localisation, dbo.Historique.Statut, TblBureau_4.Nombureau AS Prochain_bureau, dbo.TblBureau.Nombureau AS Bureau_d_origine, TblBureau_1.Nombureau AS Bureau_de_destination, Personne.nom AS Expediteur,  Personne_1.nom + ' '+ Personne_1.adresse AS Destinataire, dbo.Envoi.poids, p1.vehicle as Voiture  FROM dbo.Envoi INNER JOIN dbo.Historique ON dbo.Envoi.numEnvoi = dbo.Historique.numEnvoi INNER JOIN dbo.TblBureau ON dbo.Envoi.bureauOri = dbo.TblBureau.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_2 ON dbo.Envoi.bureauPass = TblBureau_2.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_1 ON dbo.Envoi.bureauDest = TblBureau_1.NCODIQUE INNER JOIN dbo.Facture ON dbo.Historique.numEnvoi = dbo.Facture.numEnvoi INNER JOIN dbo.Personne AS Personne_1 ON dbo.Facture.idPersDest = Personne_1.idPers INNER JOIN dbo.Personne ON dbo.Facture.idPersExp = dbo.Personne.idPers INNER JOIN dbo.TblBureau AS TblBureau_3 ON dbo.Historique.parcours = TblBureau_3.NCODIQUE FULL JOIN dbo.TblBureau AS TblBureau_4 ON dbo.Historique.burSuiv = TblBureau_4.NCODIQUE "+" LEFT  JOIN dbo.PartColis p1 ON (dbo.Envoi.codeBarre = p1.idColis and p1.idPartColis=(select Max(p2.idPartColis) FROM PartColis p2 WHERE dbo.Envoi.codeBarre=p2.idColis) ) WHERE "+  where_clause + " AND dbo.Historique.isActive=1 ORDER BY dbo.Envoi.codeBarre ASC, dbo.Historique.dateHistoriqueFull DESC;"
+            else:#new
+                field = str(request.POST['nomPersExp'])
+                query = "SELECT distinct  dbo.Envoi.codeBarre as Numero_d_envoi, dbo.Historique.dateHistoriqueFull as Date, TblBureau_3.Nombureau AS Localisation, dbo.Historique.Statut, TblBureau_4.Nombureau AS Prochain_bureau, dbo.TblBureau.Nombureau AS Bureau_d_origine, TblBureau_1.Nombureau AS Bureau_de_destination, Personne.nom AS Expediteur,  Personne_1.nom + ' '+ Personne_1.adresse AS Destinataire, dbo.Envoi.poids, p1.vehicle as Voiture  FROM dbo.Envoi INNER JOIN dbo.Historique ON dbo.Envoi.numEnvoi = dbo.Historique.numEnvoi INNER JOIN dbo.TblBureau ON dbo.Envoi.bureauOri = dbo.TblBureau.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_2 ON dbo.Envoi.bureauPass = TblBureau_2.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_1 ON dbo.Envoi.bureauDest = TblBureau_1.NCODIQUE INNER JOIN dbo.Facture ON dbo.Historique.numEnvoi = dbo.Facture.numEnvoi INNER JOIN dbo.Personne AS Personne_1 ON dbo.Facture.idPersDest = Personne_1.idPers INNER JOIN dbo.Personne ON dbo.Facture.idPersExp = dbo.Personne.idPers INNER JOIN dbo.TblBureau AS TblBureau_3 ON dbo.Historique.parcours = TblBureau_3.NCODIQUE FULL JOIN dbo.TblBureau AS TblBureau_4 ON dbo.Historique.burSuiv = TblBureau_4.NCODIQUE "+" LEFT  JOIN dbo.PartColis p1 ON (dbo.Envoi.codeBarre = p1.idColis and p1.idPartColis=(select Max(p2.idPartColis) FROM PartColis p2 WHERE dbo.Envoi.codeBarre=p2.idColis) ) WHERE LOWER(dbo.Personne.nom) LIKE '%"+  request.POST['nomPersExp'] + "'" + "AND dbo.Historique.isActive=1 ORDER BY dbo.Envoi.codeBarre ASC, dbo.Historique.dateHistoriqueFull DESC;"            
     elif(len(request.POST['idPersDest'])>0):
         if(len(where_clause)>0):#dbo.Historique.isActive
             query = "SELECT distinct dbo.Envoi.codeBarre as Numero_d_envoi, dbo.Historique.dateHistoriqueFull as Date, TblBureau_3.Nombureau AS Localisation, dbo.Historique.Statut, TblBureau_4.Nombureau AS Prochain_bureau, dbo.TblBureau.Nombureau AS Bureau_d_origine, TblBureau_1.Nombureau AS Bureau_de_destination, Personne.nom AS Expediteur,  Personne_1.nom + ' '+ Personne_1.adresse AS Destinataire, dbo.Envoi.poids, p1.vehicle as Voiture  FROM dbo.Envoi INNER JOIN dbo.Historique ON dbo.Envoi.numEnvoi = dbo.Historique.numEnvoi INNER JOIN dbo.TblBureau ON dbo.Envoi.bureauOri = dbo.TblBureau.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_2 ON dbo.Envoi.bureauPass = TblBureau_2.NCODIQUE INNER JOIN dbo.TblBureau AS TblBureau_1 ON dbo.Envoi.bureauDest = TblBureau_1.NCODIQUE INNER JOIN dbo.Facture ON dbo.Historique.numEnvoi = dbo.Facture.numEnvoi INNER JOIN dbo.Personne AS Personne_1 ON dbo.Facture.idPersDest = Personne_1.idPers INNER JOIN dbo.Personne ON dbo.Facture.idPersExp = dbo.Personne.idPers INNER JOIN dbo.TblBureau AS TblBureau_3 ON dbo.Historique.parcours = TblBureau_3.NCODIQUE FULL JOIN dbo.TblBureau AS TblBureau_4 ON dbo.Historique.burSuiv = TblBureau_4.NCODIQUE "+" LEFT  JOIN dbo.PartColis p1 ON (dbo.Envoi.codeBarre = p1.idColis and p1.idPartColis=(select Max(p2.idPartColis) FROM PartColis p2 WHERE dbo.Envoi.codeBarre=p2.idColis) ) WHERE "+  where_clause + " AND dbo.Historique.isActive=1 ORDER BY dbo.Envoi.codeBarre ASC, dbo.Historique.dateHistoriqueFull DESC;"
@@ -219,7 +234,7 @@ def search(request, default=None):
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect(reverse("search_form"))   
+        return redirect(reverse("search_form")) 
     else:
         return redirect(reverse("login"))   
 
@@ -244,6 +259,7 @@ def find(request):
                 'field': field,
                 'dataListDict':dataListDict,
             }
+            context.update(pass_usergroup_to_context(request))
             if(len(request.POST['numEnvoi'])>0):
                 if('isEvent' in request.POST):
                     return render(request, 'event.html', context)
@@ -257,7 +273,6 @@ def find(request):
                 dataListDict = []
                 dataListTuple = []
                 with connections['envois'].cursor() as cursor: 
-                    print(query)
                     cursor.execute(query)
                     dataListDict = dictfetchall(cursor)
                 for dict in dataListDict:
@@ -274,6 +289,8 @@ def find(request):
                     'field': field,
                     'dataListDict':dataListDict,
                 }
+                context.update(pass_usergroup_to_context(request))
+                context.update({'http_method': request.method})#only needed on base.html
                 return render(request, 'index.html', context)
             else:
                 return redirect(reverse("search_form")) 
@@ -284,6 +301,7 @@ def home(request):
     context = {
         'author': 'fetra',
     }
+    context.update(pass_usergroup_to_context(request))
     return render(request, 'homepage.html', context)
 
 
@@ -308,22 +326,58 @@ def login_form(request):
 def search_form(request):
     if request.user.is_authenticated:
         query = 'SELECT TblBureau.*, TblBureau.ncodique, TblBureau.Nombureau FROM TblBureau ORDER BY TblBureau.Nombureau ASC;'
-        data = TblBureau.objects.raw(query).using('envois')
+        user_idExp = 'SELECT id_'
+        try:
+            data = TblBureau.objects.raw(query).using('envois')
+        except OperationalError as e:
+            # Handle database connection issues
+            error_message = "Database connection error: " + str(e)
+            return JsonResponse({'error': error_message}, status=500)  # HTTP 500 for server error
+        except Exception as e:
+            # Handle other exceptions (e.g., SQL syntax errors)
+            error_message = "An error occurred: " + str(e)
+            return JsonResponse({'error': error_message}, status=400) 
+
         current_user = request.user
         #current_user.values_list('name',flat = True)
         #if current_user.groups.filter(name__in=['CTPR']).exists():
         dataListDict = []
         dataListTuple = []
-        with connections['envois'].cursor() as cursor: 
-            print(query)
-            cursor.execute(query)
-            dataListDict = dictfetchall(cursor)
-        print(dataListDict)
+        #with connections['envois'].cursor() as cursor: 
+        #    cursor.execute(query)
+        #    dataListDict = dictfetchall(cursor)
+        #print(dataListDict) contains list of bureau()
+                                
         context = {
             'author': 'fetra',
             'data': data,
         }
-        return render(request, 'search_form.html', context)
+        context.update(pass_usergroup_to_context(request))
+        if request.user.groups.filter(name__in=['CTPR']).exists():
+            print(f"user group: {request.user.groups.filter(name__in=['CTPR'])}")
+            context.update(pass_usergroup_to_context(request))
+            return render(request, 'search_form.html', context)
+        elif request.user.groups.filter(name__in=['COMPANY']).exists(): 
+            #email = request.user.email
+            #tsy mety fa miverina in-be-dia-be ilay Person somaphar exemple
+            #query_idpers = f"SELECT Personne.idPers FROM Personne WHERE Personne.mail like '{email}';"
+            #print(query_idpers)
+            user_profile = UserProfile.objects.get(user=request.user)
+            company = user_profile.company
+
+            try:
+                context['company'] = company
+                return render(request, 'company_search_form.html', context)
+            except OperationalError as e:
+                # Handle database connection issues
+                error_message = "Database connection error: " + str(e)
+                return JsonResponse({'Oops error': error_message}, status=400)
+            except Exception as e:
+                # Handle other exceptions (e.g., SQL syntax errors)
+                error_message = "SQL errors: " + str(e)
+                return JsonResponse({'Oops error': error_message}, status=400)
+        else:
+            return render(request, 'simple_user_search_form.html', context)
     else:
         return redirect(reverse("login"))  
 
@@ -347,10 +401,8 @@ def check_auth(request):
                 return render(request, "login.html", context)
    
             user = authenticate(request, username=username,  password=password)
-            #user = authenticate(request, username=username,  password=make_password(password))
-            #user = authenticate(request, username=username,  password=check_password(password))
-            print(user)
-            print(" ---------- ending")
+            #print(user)
+            #print(" ---------- ending")
                     
             if user is not None:
                 login(request, user)
@@ -359,6 +411,7 @@ def check_auth(request):
                 return render(request, "login.html", {"message": "Aucun utilisateur ne correspond pas !"})
 
 def list_users(request):
+    context.update(pass_usergroup_to_context(request))
     if request.method == "GET":#read
         users = User.objects.all()  
         context = {
@@ -366,9 +419,10 @@ def list_users(request):
         }
         return render(request, "users.html", context)
     elif request.method == "POST":#create
+        form = UserForm(request.POST)
         if 'edit' in request.POST:#mikitika db
             username    = request.POST.get('username')
-            password    = request.POST.get('password')
+            password    = request.POST.get('password2')
             roles   = request.POST.get('roles')
             email       = request.POST.get('email')
             id       = request.POST.get('id')
@@ -397,23 +451,26 @@ def list_users(request):
             }
             return render(request, "users.html", context) 
         else:
-            username    = request.POST.get('username')
-            password    = request.POST.get('password')
-            roles   = request.POST.get('roles')
-            email       = request.POST.get('email')
+            if form.is_valid():
+                username    = request.POST.get('username')
+                password    = request.POST.get('password2')
+                roles   = request.POST.get('roles')
+                email       = request.POST.get('email')
 
-            user = User()
-            user.email = email
-            user.username = username
-            #user.roles = roles
-            user.set_password(password)
-            user.save()
-            #user_obj = User.objects.create(username = username, email = email, password = make_password(password), roles = roles )
-            users = User.objects.all()  
-            context = {
-                'data': users
-            }
-            return render(request, "users.html", context)    
+                user = User()
+                user.email = email
+                user.username = username
+                #user.roles = roles
+                user.set_password(password)
+                user.save()
+                #user_obj = User.objects.create(username = username, email = email, password = make_password(password), roles = roles )
+                users = User.objects.all()  
+                context = {
+                    'data': users
+                }
+                return render(request, "users.html", context)  
+            else:
+                return render(request, 'new_users.html', {'form': form})      
 
 def new_users(request):
     form = UserForm()
@@ -422,7 +479,8 @@ def new_users(request):
 def edit_form_users(request, id):#form + data
     user = User.objects.get(pk=id)
     #form = EditUserForm(initial={'email': user.email, 'username': user.username, 'password': user.password, 'roles': user.roles})
-    form = EditUserForm(initial={'email': user.email, 'username': user.username, 'password': user.password})
+    #form = EditUserForm(initial={'email': user.email, 'username': user.username, 'password': user.password})
+    form = UserForm(initial={'email': user.email, 'username': user.username, 'password': user.password})
     return render(request, 'edit_users.html', {'form': form, 'id': id})
 
 def delete_users(request, id):

@@ -1152,135 +1152,33 @@ html {
 {% endblock mystyle %}
     
 {% block content %}
-    <div class='row  justify-content-center' >
-        <div class="s009 justify-content-center">
-            <form method="post" id="form_search" action="{% url 'find' %}" target="_self" class="justify-content-center">
-                {% csrf_token %}
-              <div class="inner-form justify-content-center">
-                <div class="basic-search">
-                  <div class="input-field">
-                    <input id="numEnvoi" name="numEnvoi" type="text" placeholder="Taper le numero de l'envoi / code à barre" />
-                  </div>
-                </div>
-      
-                <div class="advance-search">
-                  <div class="advance-input" style="">
-                    <span class="desc">RECHERCHE AVANCEE</span>
-                    <div class="row">
-                      <div class="input-field">
-                        <input id="numBordereau" class="input-text" name="numBordereau" type="text" style="border-color:'1px solid black'" placeholder="num bordereau" />
-                      </div>
-                      <div class="input-field" style="">
-                        <input id="numFacture" class="input-text" name="numFacture" type="text" style="border-color:'1px solid black';" placeholder="num facture" />
-                      </div>
-                      <div class="input-field">
-                        <input id="poids" class="input-text" name="poids" type="text" style="border-color:'1px solid black';" placeholder="Poids (en Kg)" />
-                      </div>
-                    </div>
-      
-                    <div class="row second">
-                        <div class="input-field">
-                            <div class="input-select" style="" >
-                                <select data-trigger="" name="bureauOri">
-                                    <option placeholder="" value="">Bureau d'origine</option>
-                                    {% for x in data %}
-                                        <option value="{{x.ncodique}}">{{x.bureau}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="input-field">
-                            <div class="input-select" style="" >
-                                <select data-trigger="" name="bureauDest">
-                                    <option placeholder="" value="">Bureau du destination</option>
-                                    {% for x in data %}
-                                        <option value="{{x.ncodique}}">{{x.bureau}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>                     
-                        <div class="input-field" style="">
-                          <div class="input-select" style="" >
-                            <select data-trigger="" name="typeEnvoi">
-                              <option placeholder="" value="">Type</option>
-                              <option value="Lettre">Lettre</option>
-                              <option value="AO">AO</option>
-                            </select>
+  <div class="row justify-content-center">
+      <div class="col-md-6">
+          <div class="card">
+              <div class="card-body">
+                  <h2 class="card-title" style="color: #007bff;">Suivre un colis</h2>
+                  <form method="post" id="form_search" action="{% url 'find' %}" target="_self" class="justify-content-center">
+                      {% csrf_token %}  
+                      <div class="form-row align-items-center">
+                          <div class="col-9 mx-auto">
+                              <input id="numEnvoi" class="form-control" name="numEnvoi" type="text" placeholder="Taper le numero de l'envoi / code à barre" />
                           </div>
-                        </div>
-                    </div>
-      
-                    <div class="row second2" style="" >
-                      <div class="input-field">
-                          <input type="date" class="input-date" name="dateEnvoi" value="">
-                      </div>
-                      <div class="input-field">
-                        <label class="formulaire"> au (si intervalle) </label>
-                      </div>
-                      <div class="input-field">
-                          <input type="date" class="input-date" name="periode" value="">
-                      </div>
-                    </div>
-                    
-                    <div class="text-center">
-                      <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">Statut:</legend>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="statut" id="inlineRadio1" value="A">
-                            <label class="form-check-label" for="inlineRadio1">A</label>
-                          </div>                   
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="statut" id="inlineRadio2" value="B">
-                            <label class="form-check-label" for="inlineRadio2">B</label>
+                          <div class="col-12 mt-2 d-flex justify-content-center"> <!-- Center the buttons -->
+                              <button class="btn btn-outline-secondary ml-2 btn-delete" type="reset" name="btn-delete">EFFACER</button>
+                              <button class="btn btn-outline-primary btn-search" type="submit" name="btn-search">RECHERCHER</button>
                           </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="statut" id="inlineRadio3" value="C">
-                            <label class="form-check-label" for="inlineRadio3">C</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="statut" id="inlineRadio4" value="D">
-                            <label class="form-check-label" for="inlineRadio4">D</label>
-                          </div>                   
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="statut" id="inlineRadio5" value="E">
-                            <label class="form-check-label" for="inlineRadio5">E</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="statut" id="inlineRadio6" value="F">
-                            <label class="form-check-label" for="inlineRadio6">F</label>
-                          </div>
-                      </fieldset>
-                    </div>
-      
-                    <div class="row second3">
-                        <div class="input-field">
-                            <input id="idPersExp" class="input-text" name="idPersExp" type="text" value="{% if id_bigclient %} {{ id_bigclient }} {% endif %}" style="border-color:'1px solid black';" placeholder="id expediteur" />
-                        </div>
-                        <div class="input-field">
-                            <input id="idPersDest" class="input-text" name="idPersDest" type="text" style="border-color:'1px solid black'; " placeholder="id destinataire" />
-                        </div>
-                        <div class="input-field">
-                        </div>
-                    </div>
-                  </div>
-                  <div class="row third">
-                    <div class="input-field">
-                      <div class="result-count">
-                        <span> </span></div>
-                      <div class="input-field">
-                        <input type="reset"  class="btn-delete btn"  name="btn-delete" text="EFFACER"/>
                       </div>
-                      <div class="input-field">
-                        <input type="submit"  class="btn-search btn"  name="btn-search" text="RECHERCHER"/>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  </form>
               </div>
-            </form>
-        </div>
-      <div class='row' style="height: 60px;" >
+          </div>
       </div>
+  </div>
 
-    </div>
+
+
+
+
+
+
+
 {% endblock content %}

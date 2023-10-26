@@ -3,14 +3,22 @@
 {% block navbar %} {% endblock navbar %}
 {% block content %}
     <div id='form-container' >
-        <form action="{% url 'users' %}" method="post">
+        <form action="{% url 'users' %}" method="post" id="registration-form">
             {% csrf_token %}
             <div id='form-contents'>
                 {% for field in form %}
                     <p class="form-field">{{ field.label_tag }} {{ field }}</p>
                 {% endfor %}
                 <div class="btn-container"><input type="submit" class="btn btn-primary" value="Submit"></div>
+                <div id="error" style="color: red;"></div>
             </div>
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </form>
     </div>
     <style>
@@ -49,5 +57,21 @@
         }       
         
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("registration-form");
+            const password1 = document.getElementById("id_password1");
+            const password2 = document.getElementById("id_password2");
+            const errorDiv = document.getElementById("error");
+    
+            form.addEventListener("submit", function(event) {
+                if (password1.value !== password2.value) {
+                    event.preventDefault(); // Prevent form submission
+                    errorDiv.textContent = "Passwords do not match.";
+                }
+            });
+        });
+    </script>
+    
 {% endblock content %}
 

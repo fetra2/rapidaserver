@@ -1204,7 +1204,7 @@ html {
                             <select data-trigger="" name="typeEnvoi">
                               <option placeholder="" value="">Type</option>
                               <option value="Lettre">Lettre</option>
-                              <option value="AO">AO</option>
+                              <option value="AO" selected>AO</option>
                             </select>
                           </div>
                         </div>
@@ -1252,12 +1252,10 @@ html {
                       </fieldset>
                     </div>
       
-                    <div class="row second3">
-                        <div class="input-field">
-                            <input id="idPersExp" class="input-text" name="idPersExp" type="text" value="{% if id_bigclient %} {{ id_bigclient }} {% endif %}" style="border-color:'1px solid black';" placeholder="id expediteur" />
-                        </div>
-                        <div class="input-field">
-                            <input id="idPersDest" class="input-text" name="idPersDest" type="text" style="border-color:'1px solid black'; " placeholder="id destinataire" />
+                    <div class="row">
+                        <div class="form-data">
+                            <label for="nomPersExp">Contactez l'administrateur si vous n'etes pas </label>
+                            <input id="nomPersExp" class="input-text" name="nomPersExp" type="text" value="{{ company.name }}" style="border:none; border-color:'1px solid black';" readonly >
                         </div>
                         <div class="input-field">
                         </div>

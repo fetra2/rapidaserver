@@ -25,7 +25,7 @@
                             <td>{{ forloop.counter }}</td>
                             <td>{{ x.email }}</td> 
                             <td>{{ x.username }}</td> 
-                            <td>{{ x.password }}</td> 
+                            <td style="overflow-wrap: anywhere; word-break: break-all;">{{ x.password }}</td> 
                             <td>{{ x.roles }}</td> 
                             <td>
                                 <form action="{% url 'users' %}" method="post">
