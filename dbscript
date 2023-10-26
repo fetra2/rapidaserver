@@ -1,0 +1,372 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.4
+-- Dumped by pg_dump version 14.8 (Ubuntu 14.8-1.pgdg22.04+1)
+
+-- Started on 2023-05-19 11:43:34 EAT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3444 (class 0 OID 32968)
+-- Dependencies: 216
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+1	CTPR
+\.
+
+
+--
+-- TOC entry 3446 (class 0 OID 32977)
+-- Dependencies: 218
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3442 (class 0 OID 32961)
+-- Dependencies: 214
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can view log entry	1	view_logentry
+5	Can add permission	2	add_permission
+6	Can change permission	2	change_permission
+7	Can delete permission	2	delete_permission
+8	Can view permission	2	view_permission
+9	Can add group	3	add_group
+10	Can change group	3	change_group
+11	Can delete group	3	delete_group
+12	Can view group	3	view_group
+13	Can add user	4	add_user
+14	Can change user	4	change_user
+15	Can delete user	4	delete_user
+16	Can view user	4	view_user
+17	Can add content type	5	add_contenttype
+18	Can change content type	5	change_contenttype
+19	Can delete content type	5	delete_contenttype
+20	Can view content type	5	view_contenttype
+21	Can add session	6	add_session
+22	Can change session	6	change_session
+23	Can delete session	6	delete_session
+24	Can view session	6	view_session
+25	Can add user	7	add_user
+26	Can change user	7	change_user
+27	Can delete user	7	delete_user
+28	Can view user	7	view_user
+29	Can add envoi	8	add_envoi
+30	Can change envoi	8	change_envoi
+31	Can delete envoi	8	delete_envoi
+32	Can view envoi	8	view_envoi
+33	Can add tbl bureau	9	add_tblbureau
+34	Can change tbl bureau	9	change_tblbureau
+35	Can delete tbl bureau	9	delete_tblbureau
+36	Can view tbl bureau	9	view_tblbureau
+\.
+
+
+--
+-- TOC entry 3448 (class 0 OID 32984)
+-- Dependencies: 220
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$320000$uPR69rLT6VzHAcR3EmdxuE$rFv+k6mxHsgJLjQNbKN1QxKAV5EceEoNNKMWw4QwhFY=	2023-04-13 11:53:25.100867+03	t	root			rasolonjatovofetra@gmail.com	t	t	2022-10-24 11:31:37.100946+03
+4	pbkdf2_sha256$320000$XosTVMcRTpWjJbldvhywV8$lVnIagbcGQVkfFE5xw8bHNizt8e+MCEcs9bnT8czgZw=	2023-04-17 11:55:01.570919+03	f	dtra				f	t	2023-04-12 16:46:08+03
+3	pbkdf2_sha256$320000$VfaltsBBF5tnFbeNyQvVYR$l6Pt1geLTiaMA8FYRzbDES/ITGIQJq81e+MSwz0HIOc=	2022-11-16 10:41:45.071827+03	f	dsiin				f	t	2022-11-16 10:40:01+03
+2	pbkdf2_sha256$320000$T2bqwCFgpbjELQJS3dktlZ$O5fbNFinDKVKk1BPhZJUGjwLhTU8Aoq4I+T58NXUwBY=	2023-05-10 14:15:40.755119+03	f	ctpr	ctpr	ctpr		f	t	2022-10-24 11:59:58+03
+\.
+
+
+--
+-- TOC entry 3450 (class 0 OID 32993)
+-- Dependencies: 222
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+1	2	1
+2	3	1
+3	4	1
+\.
+
+
+--
+-- TOC entry 3452 (class 0 OID 33000)
+-- Dependencies: 224
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3454 (class 0 OID 33059)
+-- Dependencies: 226
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2022-10-24 11:58:50.813654+03	1	CTPR	1	[{"added": {}}]	3	1
+2	2022-10-24 11:59:58.724468+03	2	ctpr	1	[{"added": {}}]	4	1
+3	2022-10-24 12:06:11.895923+03	2	ctpr	2	[{"changed": {"fields": ["First name", "Last name"]}}]	4	1
+4	2022-10-25 14:42:25.931234+03	2	ctpr	2	[{"changed": {"fields": ["Groups"]}}]	4	1
+5	2022-11-16 10:40:01.8858+03	3	dsiin	1	[{"added": {}}]	4	1
+6	2022-11-16 10:40:55.15076+03	3	dsiin	2	[{"changed": {"fields": ["Groups"]}}]	4	1
+7	2023-04-12 16:46:08.398156+03	4	dtra	1	[{"added": {}}]	4	1
+8	2023-04-12 16:46:39.959562+03	4	dtra	2	[{"changed": {"fields": ["Groups"]}}]	4	1
+\.
+
+
+--
+-- TOC entry 3440 (class 0 OID 32952)
+-- Dependencies: 212
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	rapidaapp	user
+8	rapidaapp	envoi
+9	rapidaapp	tblbureau
+\.
+
+
+--
+-- TOC entry 3438 (class 0 OID 32943)
+-- Dependencies: 210
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2022-10-24 11:10:09.721262+03
+2	auth	0001_initial	2022-10-24 11:10:09.9084+03
+3	admin	0001_initial	2022-10-24 11:10:09.932417+03
+4	admin	0002_logentry_remove_auto_add	2022-10-24 11:10:09.939423+03
+5	admin	0003_logentry_add_action_flag_choices	2022-10-24 11:10:09.94643+03
+6	contenttypes	0002_remove_content_type_name	2022-10-24 11:10:09.96244+03
+7	auth	0002_alter_permission_name_max_length	2022-10-24 11:10:09.970446+03
+8	auth	0003_alter_user_email_max_length	2022-10-24 11:10:09.979452+03
+9	auth	0004_alter_user_username_opts	2022-10-24 11:10:09.989459+03
+10	auth	0005_alter_user_last_login_null	2022-10-24 11:10:09.996465+03
+11	auth	0006_require_contenttypes_0002	2022-10-24 11:10:09.997466+03
+12	auth	0007_alter_validators_add_error_messages	2022-10-24 11:10:10.00447+03
+13	auth	0008_alter_user_username_max_length	2022-10-24 11:10:10.030046+03
+14	auth	0009_alter_user_last_name_max_length	2022-10-24 11:10:10.041054+03
+15	auth	0010_alter_group_name_max_length	2022-10-24 11:10:10.052062+03
+16	auth	0011_update_proxy_permissions	2022-10-24 11:10:10.059068+03
+17	auth	0012_alter_user_first_name_max_length	2022-10-24 11:10:10.067074+03
+18	rapidaapp	0001_initial	2022-10-24 11:10:10.07608+03
+19	rapidaapp	0002_envoi_tblbureau_alter_user_username	2022-10-24 11:10:10.092093+03
+20	rapidaapp	0003_envoi_poids	2022-10-24 11:10:10.095095+03
+21	rapidaapp	0004_remove_envoi_poids	2022-10-24 11:10:10.098097+03
+22	sessions	0001_initial	2022-10-24 11:10:10.105101+03
+23	rapidaapp	0005_envoi_poids	2023-05-10 12:18:13.60381+03
+\.
+
+
+--
+-- TOC entry 3459 (class 0 OID 33111)
+-- Dependencies: 231
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+f28369i4zrz9bzmkaq84on6jijn0h3u4	.eJzdjTsOwjAQRO_iOrK8dj42JTVQ0CJk2d4NCZAY5UMT5e4kUgq4Au28NzMTs24cKjv21Nka2Y5Jlnxn3oUHtSvAu2tvkYfYDl3t-arwjfb8GJGe-839GahcX61tTyaQ0rpUFDIPOeq0yFQRtALSAAYMBi9LqQAleO9yp3wORucyJYFhGR2oeVl0g2O7y8ROY0NdtGipfcd6eTgfMkiFkiAEFILNyZ861_kDDx2G-g:1pXgZA:4Xvk-jmmtzmrmzjHtyyWqt7rLANPkueEvwAaWW7ODms	2023-03-16 13:53:40.083132+03
+5n77s9fpdr19r3fpyyzkb2qzl60uwjig	.eJydjTsPgjAUhf9LZ0J6Wx4to7M6uBrTtL0XQYUaHi6E_y4kDLoZ13O-852JGTsOlRl76kyNrGCCRZ-Zs_5O7VrgzbbXEPvQDl3t4hWJt7aPDwHpsdvYL0Fl-2pdO9KepFKlJJ86yFAleSpzrySQAtCg0TtRCgkowDmbWeky0CoTCXH0i3Sg5mnQDpYV54kdx4a6YNBQ-wr18nDap5BwKYBzyDmbo78ZACX0ynCe_Oa5zG-Yf2c_:1pXgqT:uitnzfa_RVaGr8jrbHSlsGl--oJOk1VDi3mXn0Tch28	2023-03-16 14:11:33.144673+03
+ryterj8wqut369pst32ut6slk2zxyw1k	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1oo0lv:CdQxyDEEgCAQqOeR2Bug4BvRKPKPrrC_OEXE1h0P0LM	2022-11-10 14:10:03.537358+03
+tq80gb0jizh07ilucpwgpez06dfgg8in	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1oo1In:nMQED4qzyPkAgamioi6UlglKC5o4n-EHIX9uu97ImkI	2022-11-10 14:44:01.41305+03
+ojvkhgbged90n8yjjsn495k4y6hu9jdf	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1oq7LN:eXHDpWH4UU3nNji6jGH0JJagHKSYZ7fjtTWKnVbfllI	2022-11-16 09:35:21.559025+03
+679paa530s1sjue20ib1njd4kc011nz4	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1osfP5:3ujPkhQumUkXh7PIC8XPHd1ejXbnZGZnlnk9dR70KU4	2022-11-23 10:21:43.923172+03
+fm3qoebk8m3m6rfy3b6fh30u1fb1e1l9	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1osfgW:PxLaoYSmRypiJkGeCXQGnEzfX2t_mniT4nmFe3mxo7w	2022-11-23 10:39:44.849831+03
+jnjgg38j7qdum8xsciyj7175ybc7iiy1	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1ovCmW:sj5MKIZBgpWQ89pN_uIsV0L53cpruXCPnZNAPK6o9Zw	2022-11-30 10:24:24.662527+03
+bclc1l3zuetl0573ov7t90wu6kkmuvdd	.eJxVjDsOwjAQBe_iGln-bbympOcM1vqHA8iW4qRC3B0ipYD2zcx7MU_bWv028uLnxM5MstPvFig-cttBulO7dR57W5c58F3hBx382lN-Xg7376DSqN_ayAKTiImksVYhATpImFUuQVsUoNDlZMwExhapAcEFlMIqSSWAjoK9P8AhNsM:1ovCyG:BsW5TC0BxQ2_BQBKyJ1OI-7SCCdcXzTHn_0ZdaEJit8	2022-11-30 10:36:32.310242+03
+68z4a7nfs5x2334ddgn1vs5br5ji56tb	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pXdh0:WEFX_TeOOfhBnxseU7Cwm7HEWcd8iajrsnFyRrtnL34	2023-03-16 10:49:34.455388+03
+unig7wypbckx798ovtlvjvcm9k5rej15	.eJxVjDsOwjAQBe_iGlmb2Gt7Kek5g7X-4QBypDipEHeHSCmgfTPzXsLztla_9bz4KYmzUOL0uwWOj9x2kO7cbrOMc1uXKchdkQft8jqn_Lwc7t9B5V6_tYk6M5YEQ46ZYiqsiKiggTDAiEiI7FAzWQBnXdEjO2UNWnBOhUji_QHrqzcz:1ovD3J:UX_wefj0Zq86kfAIZ2eUN3CnA15VcXwwRyYXJstHplA	2022-11-30 10:41:45.087405+03
+c6s5kri16lwdp1c9anm7682xqgjgygq3	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pNAlK:KuinbEFjv6hVsb-xUFgaO2Oib18N1WlgV1UeDfyzBRA	2023-02-15 13:54:46.526161+03
+ms4oyypevg0z58yfggagwx2kdhffstco	.eJxVjDsOwjAQBe_iGln-bbympOcM1vqHA8iW4qRC3B0ipYD2zcx7MU_bWv028uLnxM5MstPvFig-cttBulO7dR57W5c58F3hBx382lN-Xg7376DSqN_ayAKTiImksVYhATpImFUuQVsUoNDlZMwExhapAcEFlMIqSSWAjoK9P8AhNsM:1pNrFp:7cmz9QWRmR30l7TTpXk6iYG2hIWL0M5SwDpjWXr2HA0	2023-02-17 11:17:05.232781+03
+fweby7f200a1zmrxbgwf1k12toykc4xi	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pNtiR:oVFLuUJWFejRH8OgdsYTfhFIw5knBvXkNHXp6doWrXg	2023-02-17 13:54:47.660015+03
+up095km8fzlecv3nf1v2ud5xjbftlz0l	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pXe9t:VOYgQdXrCVSEaZqVFWEpk67nmN-sCQW9nn4LtPbybr8	2023-03-16 11:19:25.61859+03
+9d1k805aetzvr7c3q34zuuddawrm73yi	.eJxtjT8PgjAUxL9LZ0L62gKF0VkdXI1p2r6HoEANf1wI311IGDTxxrvf3c3M2GmszDRQb2pkBRMs-vac9U_qtgAftruH2Idu7GsXb0i8p0N8CkjNYWd_Bio7VFvbUe5Jal1K8omDFLXKEpl5LYE0QA45eidKIQEFOGdTK10KuU6FIo5-HR2pfRm0o2XFdWbnqaU-GDTUvUO9PlyOCSguBXAOGWdL9IfpG-CQcMFXacWW2_IBaAlSTg:1pXeCp:NpK9xpb61Xhc0f6MljuatBxbLJxK2AjI1QF7TswyymE	2023-03-16 11:22:27.847361+03
+o90qn9elp1n57nopm0bvu08do84ix02a	.eJytjbkOwjAQRP_FdWR57Rw2JTVQ0CJk2d4NCZAY5aCJ8u8kUgroaee9mZmYdeNQ2bGnztbIdkyy5DvzLjyoXQHeXXuLPMR26GrPV4VvtOfHiPTcb-7PQOX6am17MoGU1qWikHnIUadFpoqgFZAGMGAweFlKBSjBe5c75XMwOpcpCQzL6EDNy6IbHNtdJnYaG-qiRUvtO9bLw_mQQSqUBCGgEGxO_uRc5w-_Tlym:1pXeWa:S0fvBHyP1BeqfaoxV8C9buoAIuf4OBtiIji9ktLpcEw	2023-03-16 11:42:52.047195+03
+z79lu54c2i7t87vvgblup3w5m1m0e7th	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pXech:WryGFzKzi5lr_rt_OD__F--xawbTx5CiXSOkM3IZmF8	2023-03-16 11:49:11.85677+03
+3ztzjyrnm2kmagu8g1c47krdnydintd1	.eJytjbkOwjAQRP_FdWR57Rw2JTVQ0CJk2d4NCZAY5aCJ8u8kUgroaee9mZmYdeNQ2bGnztbIdkyy5DvzLjyoXQHeXXuLPMR26GrPV4VvtOfHiPTcb-7PQOX6am17MoGU1qWikHnIUadFpoqgFZAGMGAweFlKBSjBe5c75XMwOpcpCQzL6EDNy6IbHNtdJnYaG-qiRUvtO9bLw_mQQSqUBCGgEGxO_uRc5w-_Tlym:1pXf46:61CHviC5PWbgTTqOZNkKj6EJbxL69CoXLa2a0Ds8FN4	2023-03-16 12:17:30.552184+03
+m9zvy1hhry9z637hspvm59fgwm28k6qz	.eJxtjT0PgjAURf9LZ0L62gKto7M6uBrTtH0PQYUaPlwI_11IGDRxvefceydm3ThUduypszWyHRMs-c68Cw9qV4B3195iGmI7dLVPVyXdaJ8eI9Jzv7k_A5Xrq7XtyQSSWpeSQuYhR62KTBZBSyANYMBg8KIUElCA9y530udgdC4UcQzL6EDNy6IbHNtdJnYaG-qiRUvtO9bLw_mQgeJSAOdQcDYnfx0ALczqcK7YfJ0_ZDlSFQ:1pXgBQ:wO51xAX_yAfLo0nJuD2CCPW2kf-MVkIlxUN_jWwVrZk	2023-03-16 13:29:08.355923+03
+49ctz4ubmo2kn27c5t9uiumvhnykygds	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pXgEs:nm0rbwf5D3Z06CfT6XDRfxdXFgUI-YwRBT0rWfEep2g	2023-03-16 13:32:42.721469+03
+r0w4pljp66tni3wtkjptci6hb554e2yf	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pXgFP:qLQ2jdspSO629GfFbgRLRVylYXiD1P2Y6lHK9oC2Dvg	2023-03-16 13:33:15.34183+03
+ugs3x0olga04koqjzedhwi06hu3quavz	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pXgQh:duGEJrnMC5-fYVPEg6IkFmJRoFVFcMdhKPjWxMYD3l0	2023-03-16 13:44:55.14564+03
+45hu963rv5umu6b26b563x7mq2syoawo	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pjeRK:kCg5rHmrQtcoOm3Dy6SHR65-Q10HNohjVis3hWu8uOE	2023-04-18 14:03:02.846229+03
+6rsyaqu8mye9xpwnte0cg001fppfvntt	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pjfXu:Wr5djw3qSde-CSYhCZrpGwGtC6TnHcwSzxEdgT7vQtc	2023-04-18 15:13:54.725485+03
+s3zvfgn2p9yhmj8y2qbzg5bij3bqrl3b	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pjfo4:yGEOTBKANTznZJYQDe-w0P7Kgt1On7TD91IsJ56XB7E	2023-04-18 15:30:36.384552+03
+apiq4zjd9swkxhsdcs2ws6pxtbv2beyh	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pjfsC:vaIJZ4w6dgG9-tvGidzFOdk73EAX7tRH69T79aB00m4	2023-04-18 15:34:52.467074+03
+5wg539ur82ypfmaulne23kiuudwdodf9	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pjgIV:-QhBRVfofI4Y0i9bZo7P3lZxNxZnWbyfEd3fbTBIO8o	2023-04-18 16:02:03.31406+03
+xmv8tvv76bmgn2rsjr5lhyubyn5g98cq	.eJxVjDsOwjAQBe_iGln4b1PS5wzWrr2LAyiR4qRC3B0ipYD2zcx7iQzb2vLWacljFRdhxel3QygPmnZQ7zDdZlnmaV1GlLsiD9rlMFd6Xg_376BBb9_aW-2ISClrGMwZKrOGEIp30UBwkTkhYMBklCI0nILhSOSwaF-iDuL9AfZiOHU:1pmaoX:wRIlUhj96pUhpuc5k5DopclZradu1_EYc8hwTOSa5rA	2023-04-26 16:47:09.576711+03
+fmoo5gb07jks6d9c85cd7vgw7dvices0	.eJxVjDsOwjAQBe_iGln-bbympOcM1vqHA8iW4qRC3B0ipYD2zcx7MU_bWv028uLnxM5MstPvFig-cttBulO7dR57W5c58F3hBx382lN-Xg7376DSqN_ayAKTiImksVYhATpImFUuQVsUoNDlZMwExhapAcEFlMIqSSWAjoK9P8AhNsM:1pmshp:r2T_NgoQTZVMxYNEnwaaGoP1GJR1nrh8sJQvV5GOyKQ	2023-04-27 11:53:25.116484+03
+fkf4m19klqx9vbb3ifpfddbexisnz4pc	.eJxVjDsOwjAQBe_iGln4b1PS5wzWrr2LAyiR4qRC3B0ipYD2zcx7iQzb2vLWacljFRdhxel3QygPmnZQ7zDdZlnmaV1GlLsiD9rlMFd6Xg_376BBb9_aW-2ISClrGMwZKrOGEIp30UBwkTkhYMBklCI0nILhSOSwaF-iDuL9AfZiOHU:1pnZZX:aywfBznNOnxa_z4Z2h4WmyK-C2YXlCrxYlGT91VuJH0	2023-04-29 09:39:43.530093+03
+e6np5xjcumbtmfzeyr0uffe99swmhb93	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1poKYd:IBKiCL4tMEx7F5olG6J8c_7lN7ns2SFF1F5X0tXJ2XU	2023-05-01 11:49:55.721253+03
+9culgghi5b0qsv4u9ifch0xbqvwz8z1p	.eJxVjDsOwjAQBe_iGln4b1PS5wzWrr2LAyiR4qRC3B0ipYD2zcx7iQzb2vLWacljFRdhxel3QygPmnZQ7zDdZlnmaV1GlLsiD9rlMFd6Xg_376BBb9_aW-2ISClrGMwZKrOGEIp30UBwkTkhYMBklCI0nILhSOSwaF-iDuL9AfZiOHU:1poKdZ:Js2Xgcz0FlnUH_xc3-NMAlTEZaKuNvEF_w4MFIdJEoc	2023-05-01 11:55:01.570919+03
+u0td7cvhh8bhohmoegfqfsqzu11hu7dq	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pohTx:nlH6qVo8OuRYkJxUkFKQuuX5gzuY-9tLr293sLI2nqU	2023-05-02 12:18:37.806394+03
+3yr8nf9gy1lmiheb9bolmayri2szzwyr	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pojGN:cJO8tLu-7LYwo9gAFqvK6MTrC0wqyCJnqYjn0r9WQBE	2023-05-02 14:12:43.886147+03
+bb05kru41xcsypj1pz7civqoznrdlzhc	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pok4V:EiB0oat4yvOgqeN0OyTl_1k8ARDRkOudWOgrbWGUs2s	2023-05-02 15:04:31.644399+03
+3jj0kf22qgl9ybwngk2dc8g0q02zr89d	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pomLT:888GzzhqQgQu7i_d7f96Yz31_mjlH1V53EHsu8jvQfk	2023-05-02 17:30:11.102035+03
+kiphhxijsj62mjrg71bqgu0r86ozgh14	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pp01n:uWmW1k06Rj4r8jRK4ZI_V3EQmifcIjA6V1ZCLy0gV7s	2023-05-03 08:06:47.661662+03
+tbkp3u80qssn2kfs7m23ky7qujiet781	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pp7Oy:WnpbnjaWsfus3CAP-KNqEkzHZCczqvnkPpKrSm_JzHo	2023-05-03 15:59:12.901254+03
+g834tnknmdbcg621el9gkwzkupjm76n1	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pp7Qq:M1n8clOFQQVbnxLVLjI2gqZu9r8x8PxAeG4adKlg5V0	2023-05-03 16:01:08.04335+03
+nccotlpwnulpx32ltmo6lqonu2z7l5yb	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1ppTfo:ssh5L_PV7f2EMViqvEFLx-Lxtclc5qSkYI4HyIdMsDY	2023-05-04 15:46:04.970413+03
+x79ukp86eqdtva1nmzgyfmonzlo91lnn	.eJxVjMsOwiAUBf-FtSFeaCm4dO83EO6jUjWQlHZl_HdD0oVuz8yct4pp33Lcm6xxYXVRRp1-N0z0lNIBP1K5V021bOuCuiv6oE3fKsvrerh_Bzm13GuUQGK9n63QiODYD9NoJ_IWxAMECExoZmOBDSAmlyw6CN6ZQc5M6vMF8sY4Ag:1pwhnI:UG3Yw1BUiTXqir8aQr25ydntpQ9QJ50piuzOt0x6-mw	2023-05-24 14:15:40.772185+03
+\.
+
+
+--
+-- TOC entry 3457 (class 0 OID 33097)
+-- Dependencies: 229
+-- Data for Name: rapidaapp_envoi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rapidaapp_envoi ("numEnvoi", "bureauOri", "bureauExp", "bureauDest", "bureauPass", poids) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3458 (class 0 OID 33102)
+-- Dependencies: 230
+-- Data for Name: rapidaapp_tblbureau; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rapidaapp_tblbureau ("NCODIQUE", "Nombureau") FROM stdin;
+\.
+
+
+--
+-- TOC entry 3456 (class 0 OID 33089)
+-- Dependencies: 228
+-- Data for Name: rapidaapp_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rapidaapp_user (id, email, username, password, roles) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3475 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, true);
+
+
+--
+-- TOC entry 3476 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- TOC entry 3477 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 36, true);
+
+
+--
+-- TOC entry 3478 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 3, true);
+
+
+--
+-- TOC entry 3479 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 4, true);
+
+
+--
+-- TOC entry 3480 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- TOC entry 3481 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 8, true);
+
+
+--
+-- TOC entry 3482 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 9, true);
+
+
+--
+-- TOC entry 3483 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 23, true);
+
+
+--
+-- TOC entry 3484 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: rapidaapp_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.rapidaapp_user_id_seq', 1, false);
+
+
+-- Completed on 2023-05-19 11:43:35 EAT
+
+--
+-- PostgreSQL database dump complete
+--
+

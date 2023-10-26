@@ -1,0 +1,11 @@
+.env
+Scripts/
+venv/
+rapidavenv/
+rapidavenvwin/
+rapidaproject/.env
+rapidaproject/.DS_Store
+rapidaproject/__pycache__/
+rapidaproject/rapidaapp/migrations/__pycache__/
+rapidaproject/rapidaapp/templatetags/__pycache__/
+rapidaapp/__pycache__/
