@@ -236,7 +236,8 @@ def index(request):
     if request.user.is_authenticated:
         return redirect(reverse("search_form")) 
     else:
-        return redirect(reverse("login"))   
+        #return redirect(reverse("login"))   
+        return redirect(reverse("search_form"))   
 
 
 def find(request):
@@ -295,7 +296,29 @@ def find(request):
             else:
                 return redirect(reverse("search_form")) 
     else:
-        return redirect(reverse("login"))   
+        if request.method == "POST":
+            searchRres = search(request)
+            dataListDict = searchRres["dataListDict"]
+            dataListTuple = searchRres["dataListTuple"]
+            field = searchRres["field"]
+
+            if len(dataListDict)>0:
+                titre = dataListDict[0]
+            else:
+                titre = []
+            context = {
+                'author': 'Destinataire',
+                'data': dataListTuple,
+                'titre': titre,
+                'field': field,
+                'dataListDict':dataListDict,
+            }
+            if(len(request.POST['numEnvoi'])>0):
+                if('isEvent' in request.POST):
+                    return render(request, 'event.html', context)
+                else:
+                    return render(request, 'index_oneRes.html', context)
+            return render(request, 'index.html', context)
 
 def home(request):
     context = {
@@ -362,12 +385,17 @@ def search_form(request):
             #tsy mety fa miverina in-be-dia-be ilay Person somaphar exemple
             #query_idpers = f"SELECT Personne.idPers FROM Personne WHERE Personne.mail like '{email}';"
             #print(query_idpers)
-            user_profile = UserProfile.objects.get(user=request.user)
-            company = user_profile.company
 
             try:
+                user_profile = UserProfile.objects.get(user=request.user)
+                company = user_profile.company
                 context['company'] = company
                 return render(request, 'company_search_form.html', context)
+            except UserProfile.DoesNotExist:
+                error_message = "Utilisateur non associé à une Société."
+                messages.error(request, error_message)
+                return redirect("logout") 
+                #return JsonResponse({'Oops error': error_message}, status=400)
             except OperationalError as e:
                 # Handle database connection issues
                 error_message = "Database connection error: " + str(e)
@@ -379,11 +407,15 @@ def search_form(request):
         else:
             return render(request, 'simple_user_search_form.html', context)
     else:
-        return redirect(reverse("login"))  
+        return render(request, 'simple_user_search_form.html', {})
 
 def logout_view(request):
     logout(request)
-    return render(request, "login.html", {"messages": "Vous êtes déconnectés."})
+    error_messages = messages.get_messages(request)
+    error_message = ""
+    for message in error_messages:
+        error_message = message.message
+    return render(request, "login.html", {"messages": "Vous êtes déconnectés. "+ str(error_message)})
 
 def check_auth(request):
     if request.method == "POST":
